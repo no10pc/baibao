@@ -1,4 +1,5 @@
 ﻿using Microsoft.Phone.Controls;
+using baibal.Common;
 
 namespace baibao.Model
 {
@@ -14,5 +15,16 @@ namespace baibao.Model
         {
             InitializeComponent();
         }
+
+        private void PhoneApplicationPage_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            MyIPAddress finder = new MyIPAddress();
+            finder.Find((address) =>
+            {
+                Dispatcher.BeginInvoke(() => { txtIP.Text = address == null ? "Unknown" : address.ToString(); });
+            });
+        }
+      
+
     }
 }

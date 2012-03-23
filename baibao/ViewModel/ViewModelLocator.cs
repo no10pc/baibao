@@ -19,6 +19,7 @@ namespace baibao.ViewModel
             SimpleIoc.Default.Register<QQViewModel>();
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<MobileViewModel>();
+            SimpleIoc.Default.Register<IPViewModel>();
         }
 
         public QQViewModel QQ
@@ -42,7 +43,14 @@ namespace baibao.ViewModel
                 return ServiceLocator.Current.GetInstance<MobileViewModel>();
             }
         }
-       
+
+        public IPViewModel IP
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<IPViewModel>();
+            }
+        }
         public static void Cleanup()
         {
            

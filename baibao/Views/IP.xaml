@@ -5,6 +5,8 @@
                             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                            xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+                            xmlns:GalaSoft_MvvmLight_Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP71" 
                             mc:Ignorable="d"
                             d:DesignWidth="480"
                             d:DesignHeight="768"
@@ -14,7 +16,7 @@
                             SupportedOrientations="Portrait"
                             Orientation="Portrait"
                             shell:SystemTray.IsVisible="True"
-                            DataContext="{Binding ViewModelName, Source={StaticResource Locator}}">
+                            DataContext="{Binding IP, Source={StaticResource Locator}}" Loaded="PhoneApplicationPage_Loaded">
 
     <Grid x:Name="LayoutRoot"
           Background="Transparent">
@@ -28,18 +30,32 @@
                     Grid.Row="0"
                     Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle"
-                       Text="MY APPLICATION"
+                       Text="IP客"
                        Style="{StaticResource PhoneTextNormalStyle}" />
             <TextBlock x:Name="PageTitle"
-                       Text="page name"
+                       Text="IP 搜索"
                        Margin="9,-7,0,0"
                        Style="{StaticResource PhoneTextTitle1Style}" />
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel"
-              Grid.Row="1"
-              Margin="12,0,12,0"></Grid>
+        <Grid x:Name="ContentGrid"
+		      Grid.Row="1">
+
+            <TextBlock x:Name="txtResult" Text="{Binding Location}"
+			           Style="{StaticResource PhoneTextNormalStyle}"
+			           FontSize="40" TextWrapping="Wrap" Margin="12,69,12,268" />
+            <TextBox x:Name="txtIP" TextWrapping="Wrap"  VerticalAlignment="Top" Margin="0,0,105,0" TabIndex="1" InputScope="TelephoneNumber"></TextBox>
+            <Button x:Name="btnlocation" Content="查询" HorizontalAlignment="Right" VerticalAlignment="Top" Width="105">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <GalaSoft_MvvmLight_Command:EventToCommand x:Name="btnSearch" Command="{Binding IPLocation, Mode=OneWay}" CommandParameter="{Binding Text, ElementName=txtIP}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <Image x:Name="logo" Height="256" Margin="8,0,8,8" VerticalAlignment="Bottom" Width="256" Source="{Binding Logo, Mode=OneWay}" />
+
+        </Grid>
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->
