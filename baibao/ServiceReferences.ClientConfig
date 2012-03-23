@@ -1,0 +1,23 @@
+﻿<configuration>
+    <system.serviceModel>
+        <bindings>
+            <basicHttpBinding>
+                <binding name="MobileCodeWSSoap" maxBufferSize="2147483647" maxReceivedMessageSize="2147483647">
+                    <security mode="None" />
+                </binding>
+                <binding name="qqOnlineWebServiceSoap" maxBufferSize="2147483647"
+                    maxReceivedMessageSize="2147483647">
+                    <security mode="None" />
+                </binding>
+            </basicHttpBinding>
+        </bindings>
+        <client>
+            <endpoint address="http://webservice.webxml.com.cn/webservices/qqOnlineWebService.asmx"
+                binding="basicHttpBinding" bindingConfiguration="qqOnlineWebServiceSoap"
+                contract="QQServices.qqOnlineWebServiceSoap" name="qqOnlineWebServiceSoap" />
+            <endpoint address="http://webservice.webxml.com.cn/WebServices/MobileCodeWS.asmx"
+                binding="basicHttpBinding" bindingConfiguration="MobileCodeWSSoap"
+                contract="MobileServices.MobileCodeWSSoap" name="MobileCodeWSSoap" />
+        </client>
+    </system.serviceModel>
+</configuration>

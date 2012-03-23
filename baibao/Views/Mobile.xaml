@@ -1,0 +1,74 @@
+﻿<phone:PhoneApplicationPage
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+                            xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                            xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:GalaSoft_MvvmLight_Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP71" x:Class="baibao.Views.Mobile"
+                            mc:Ignorable="d"
+                            d:DesignWidth="480"
+                            d:DesignHeight="768"
+                            FontFamily="{StaticResource PhoneFontFamilyNormal}"
+                            FontSize="{StaticResource PhoneFontSizeNormal}"
+                            Foreground="{StaticResource PhoneForegroundBrush}"
+                            SupportedOrientations="Portrait"
+                            Orientation="Portrait"
+                            shell:SystemTray.IsVisible="True"
+                            DataContext="{Binding Mobile, Source={StaticResource Locator}}">
+
+    <Grid x:Name="LayoutRoot"
+	      Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel"
+		            Grid.Row="0"
+		            Margin="24,24,0,12">
+            <TextBlock x:Name="ApplicationTitle"
+			           Text="{Binding ApplicationTitle}"
+			           Style="{StaticResource PhoneTextNormalStyle}" />
+            <TextBlock x:Name="PageTitle"
+			           Text="{Binding PageName}"
+			           Margin="-3,-8,0,0"
+			           Style="{StaticResource PhoneTextTitle1Style}" />
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentGrid"
+		      Grid.Row="1">
+
+            <TextBlock x:Name="txtResult" Text="{Binding Location}"
+			           Style="{StaticResource PhoneTextNormalStyle}"
+			           FontSize="40" Margin="8,69,8,268" />
+            <TextBox x:Name="txtMobile" TextWrapping="Wrap" Text="13888888888" VerticalAlignment="Top" Margin="0,0,105,0" InputScope="TelephoneNumber" />
+            <Button x:Name="btnlocation" Content="查询" HorizontalAlignment="Right" VerticalAlignment="Top" Width="105">
+               
+            	<i:Interaction.Triggers>
+            		<i:EventTrigger EventName="Click">
+            			<GalaSoft_MvvmLight_Command:EventToCommand x:Name="btnSearch" Command="{Binding MobileLocation, Mode=OneWay}" CommandParameter="{Binding Text, ElementName=txtMobile}"/>
+            		</i:EventTrigger>
+            	</i:Interaction.Triggers>
+               
+            </Button>
+            <Image x:Name="logo" Height="256" Margin="8,0,8,8" VerticalAlignment="Bottom" Width="256" Source="{Binding Logo, Mode=OneWay}" />
+
+        </Grid>
+    </Grid>
+
+    <!--Sample code showing usage of ApplicationBar-->
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+
+</phone:PhoneApplicationPage>
