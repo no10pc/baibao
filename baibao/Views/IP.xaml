@@ -44,8 +44,13 @@
 
             <TextBlock x:Name="txtResult" Text="{Binding Location}"
 			           Style="{StaticResource PhoneTextNormalStyle}"
-			           FontSize="40" TextWrapping="Wrap" Margin="12,69,12,268" />
-            <TextBox x:Name="txtIP" TextWrapping="Wrap"  VerticalAlignment="Top" Margin="0,0,105,0" TabIndex="1" InputScope="TelephoneNumber"></TextBox>
+			           FontSize="40" TextWrapping="Wrap" Margin="8,76,16,261" />
+            <TextBox x:Name="txtIP" TextWrapping="Wrap"  VerticalAlignment="Top" Margin="0,0,105,0" TabIndex="1" InputScope="TelephoneNumber" Text="{Binding IPNumber, Mode=TwoWay}">
+            	<i:Interaction.Triggers>
+            		<i:EventTrigger EventName="MouseEnter">
+            			<GalaSoft_MvvmLight_Command:EventToCommand x:Name="doubleClick" Command="{Binding txtClear, Mode=OneWay}"/>
+            		</i:EventTrigger>
+            	</i:Interaction.Triggers></TextBox>
             <Button x:Name="btnlocation" Content="查询" HorizontalAlignment="Right" VerticalAlignment="Top" Width="105">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">

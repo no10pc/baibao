@@ -68,6 +68,13 @@ namespace baibao.ViewModel
 
 
         public RelayCommand<string> IPLocation { get; private set; }
+        public RelayCommand<string> txtClear { get; private set; }
+        private object ExecutetxtClear(string x)
+        {
+            _ipNumber = x;
+            return null;
+        }
+
         private object ExecuteIPLocation(string ipNumber)
         {
             _ipNumber = ipNumber;
@@ -95,10 +102,7 @@ namespace baibao.ViewModel
             logoUpdate();
         }
 
-        void client_qqCheckOnlineCompleted(object sender, QQServices.qqCheckOnlineCompletedEventArgs e)
-        {
 
-        }
 
         void logoUpdate()
         {
@@ -116,6 +120,7 @@ namespace baibao.ViewModel
             else
             {
                 IPLocation = new RelayCommand<string>((x) => ExecuteIPLocation(x));
+                txtClear = new RelayCommand<string>((x) => ExecutetxtClear(""));
 
 
                 Location = "本机IP地址";
