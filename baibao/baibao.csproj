@@ -56,7 +56,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Users\Administrator\Desktop\MangoDataBaseDemo\Bin\Debug\GalaSoft.MvvmLight.WP71.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
+      <HintPath>..\packages\SilverlightToolkitWP.4.2011.12.14\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>C:\Users\Administrator\Desktop\MangoDataBaseDemo\Bin\Debug\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -189,6 +191,10 @@
     <Content Include="DataSource\city_next.xml" />
     <Content Include="DataSource\province.xml" />
     <Content Include="DataSource\province2.xml" />
+    <Resource Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Resource Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Resource Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Resource Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
     <None Include="Service References\IPServices\IpAddressSearchWebService.wsdl" />
