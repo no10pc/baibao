@@ -13,6 +13,10 @@ namespace baibao.Model
         public TV()
         {
             InitializeComponent();
+            
         }
+
+       
+     
     }
 }

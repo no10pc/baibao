@@ -4,17 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.IO;
+using System.Threading;
 
 namespace forDemo
 {
-    class Program
+    static class Program 
     {
         static void Main(string[] args)
         {
-            makeStrsql("province.xml");
-            makeStrsql("city.xml");
-            makeStrsql("city_next.xml");
+            //makeStrsql("province.xml");
+            //makeStrsql("city.xml");
+            //makeStrsql("city_next.xml");
+            myTV.ChinaTVprogramWebService client = new myTV.ChinaTVprogramWebService();
+            client.getAreaStringAsync();
+            client.getAreaStringCompleted += new myTV.getAreaStringCompletedEventHandler(client_getAreaStringCompleted);
+            //string[] area = client.getAreaString();
+
+            //area.ToString();
             Console.ReadKey();
+        }
+        static void client_getAreaStringCompleted(object sender, myTV.getAreaStringCompletedEventArgs e)
+        {
+            var list = e.Result.ToList();
+            foreach (string str in list)
+            {
+                Console.WriteLine(str);
+            }
         }
         static void makeStrsql(string filename)
         {
@@ -57,6 +72,15 @@ namespace forDemo
             wr.Close();//关闭流
             file.Close();
         }
+
+        public static void toString(this String[] str)
+        {
+            foreach (string s in str)
+            {
+                Console.WriteLine(s);
+            }
+        }
+
 
     }
 }
