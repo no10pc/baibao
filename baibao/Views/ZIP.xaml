@@ -1,4 +1,4 @@
-﻿<phone:PhoneApplicationPage x:Class="baibao.Model.ZIP"
+﻿<phone:PhoneApplicationPage xmlns:toolkitPrimitives="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone.Controls.Toolkit"  x:Class="baibao.Model.ZIP"
                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -6,6 +6,8 @@
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                             mc:Ignorable="d"
+                            xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                            xmlns:GalaSoft_MvvmLight_Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP71" 
                             d:DesignWidth="480"
                             d:DesignHeight="768"
                             FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -14,7 +16,7 @@
                             SupportedOrientations="Portrait"
                             Orientation="Portrait"
                             shell:SystemTray.IsVisible="True"
-                            DataContext="{Binding ViewModelName, Source={StaticResource Locator}}">
+                            DataContext="{Binding TV, Source={StaticResource Locator}}">
 
     <Grid x:Name="LayoutRoot"
           Background="Transparent">
@@ -28,18 +30,53 @@
                     Grid.Row="0"
                     Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle"
-                       Text="MY APPLICATION"
+                       Text="邮政编码查询"
                        Style="{StaticResource PhoneTextNormalStyle}" />
             <TextBlock x:Name="PageTitle"
-                       Text="page name"
+                       Text="我的邮局"
                        Margin="9,-7,0,0"
                        Style="{StaticResource PhoneTextTitle1Style}" />
         </StackPanel>
-
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel"
-              Grid.Row="1"
-              Margin="12,0,12,0"></Grid>
+        <Grid Grid.Row="1" Height="607" HorizontalAlignment="Left" Name="grid1" VerticalAlignment="Top" Width="480">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160*" />
+                <ColumnDefinition Width="160*" />
+                <ColumnDefinition Width="160*" />
+            </Grid.ColumnDefinitions>
+            <toolkitPrimitives:LoopingSelector x:Name="selectorLeft" ItemMargin="5" ItemSize="160,160">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="{Binding ShowMessage, Mode=OneWay}">
+                        <GalaSoft_MvvmLight_Command:EventToCommand x:Name="selectChanged"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <toolkitPrimitives:LoopingSelector.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Id}" FontSize="40" Tag="{Binding Name}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </toolkitPrimitives:LoopingSelector.ItemTemplate>
+            </toolkitPrimitives:LoopingSelector>
+            <toolkitPrimitives:LoopingSelector Grid.Column="1" x:Name="selectorMiddle" ItemMargin="5" ItemSize="160,160">
+                <toolkitPrimitives:LoopingSelector.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Name}" FontSize="40" Tag="{Binding Id}" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </DataTemplate>
+                </toolkitPrimitives:LoopingSelector.ItemTemplate>
+            </toolkitPrimitives:LoopingSelector>
+            <toolkitPrimitives:LoopingSelector Grid.Column="2" x:Name="selectorRight" ItemMargin="5" ItemSize="160,160">
+                <toolkitPrimitives:LoopingSelector.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Name}" FontSize="40" Tag="{Binding Id}" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </DataTemplate>
+                </toolkitPrimitives:LoopingSelector.ItemTemplate>
+            </toolkitPrimitives:LoopingSelector>
+        </Grid>
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->

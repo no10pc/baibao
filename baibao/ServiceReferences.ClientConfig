@@ -17,6 +17,10 @@
                     maxReceivedMessageSize="2147483647">
                     <security mode="None" />
                 </binding>
+                <binding name="ChinaZipSearchWebServiceSoap" maxBufferSize="2147483647"
+                    maxReceivedMessageSize="2147483647">
+                    <security mode="None" />
+                </binding>
             </basicHttpBinding>
         </bindings>
         <client>
@@ -32,6 +36,9 @@
             <endpoint address="http://webservice.webxml.com.cn/webservices/ChinaTVprogramWebService.asmx"
                 binding="basicHttpBinding" bindingConfiguration="ChinaTVprogramWebServiceSoap"
                 contract="TvServices.ChinaTVprogramWebServiceSoap" name="ChinaTVprogramWebServiceSoap" />
+            <endpoint address="http://www.webxml.com.cn/WebServices/ChinaZipSearchWebService.asmx"
+                binding="basicHttpBinding" bindingConfiguration="ChinaZipSearchWebServiceSoap"
+                contract="ZipServices.ChinaZipSearchWebServiceSoap" name="ChinaZipSearchWebServiceSoap" />
         </client>
     </system.serviceModel>
 </configuration>

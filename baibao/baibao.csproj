@@ -75,8 +75,8 @@
     <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
+    <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
@@ -112,6 +112,11 @@
     </Compile>
     <Compile Include="Common\MyIPAddress.cs" />
     <Compile Include="Service References\TvServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ZipServices\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -212,16 +217,28 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\ZipServices\baibao.ZipServices.ArrayOfXElement.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ZipServices\ChinaZipSearchWebService.wsdl" />
     <Resource Include="DataSource\area.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="DataSource\channel.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="DataSource\city.xml" />
-    <Content Include="DataSource\city_next.xml" />
-    <Content Include="DataSource\province.xml" />
-    <Content Include="DataSource\province2.xml" />
+    <Resource Include="DataSource\city.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DataSource\city_next.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DataSource\province.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DataSource\province2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <None Include="Service References\TvServices\baibao.TvServices.ArrayOfXElement.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -235,6 +252,13 @@
     <Resource Include="DataSource\station.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <None Include="Service References\ZipServices\ChinaZipSearchWebService.disco" />
+    <None Include="Service References\ZipServices\configuration91.svcinfo" />
+    <None Include="Service References\ZipServices\configuration.svcinfo" />
+    <None Include="Service References\ZipServices\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
@@ -484,6 +508,7 @@
     <WCFMetadataStorage Include="Service References\MobileServices\" />
     <WCFMetadataStorage Include="Service References\QQServices\" />
     <WCFMetadataStorage Include="Service References\TvServices\" />
+    <WCFMetadataStorage Include="Service References\ZipServices\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
