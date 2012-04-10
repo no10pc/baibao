@@ -84,12 +84,16 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\XMLManger.cs" />
     <Compile Include="Model\baibaoContext.cs" />
     <Compile Include="Common\IsolatedStorageManager.cs" />
     <Compile Include="Common\TransferMessage.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\DataItem.cs" />
+    <Compile Include="Model\DataService.cs" />
+    <Compile Include="Model\IDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\IPServices\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -107,12 +111,18 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Common\MyIPAddress.cs" />
+    <Compile Include="Service References\TvServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MobileViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="ViewModel\QQViewModel.cs" />
     <Compile Include="ViewModel\IPViewModel.cs" />
     <Compile Include="ViewModel\WeatherViewModel.cs" />
+    <Compile Include="ViewModel\TVViewModel.cs" />
     <Compile Include="Views\Exchange.xaml.cs">
       <DependentUpon>Exchange.xaml</DependentUpon>
     </Compile>
@@ -188,10 +198,29 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="DataSource\area.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DataSource\channel.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="DataSource\city.xml" />
     <Content Include="DataSource\city_next.xml" />
     <Content Include="DataSource\province.xml" />
     <Content Include="DataSource\province2.xml" />
+    <None Include="Service References\TvServices\baibao.TvServices.ArrayOfXElement.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TvServices\ChinaTVprogramWebService.disco" />
+    <None Include="Service References\TvServices\configuration91.svcinfo" />
+    <None Include="Service References\TvServices\configuration.svcinfo" />
+    <None Include="Service References\TvServices\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Resource Include="DataSource\station.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
@@ -229,6 +258,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Service References\QQServices\qqOnlineWebService.wsdl" />
+    <None Include="Service References\TvServices\ChinaTVprogramWebService.wsdl" />
     <Resource Include="Images\exchange.png" />
     <Resource Include="Images\ip.png" />
     <Resource Include="Images\map.png" />
@@ -439,6 +469,7 @@
     <WCFMetadataStorage Include="Service References\IPServices\" />
     <WCFMetadataStorage Include="Service References\MobileServices\" />
     <WCFMetadataStorage Include="Service References\QQServices\" />
+    <WCFMetadataStorage Include="Service References\TvServices\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

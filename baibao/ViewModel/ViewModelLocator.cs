@@ -21,6 +21,7 @@ namespace baibao.ViewModel
             SimpleIoc.Default.Register<MobileViewModel>();
             SimpleIoc.Default.Register<WeatherViewModel>();
             SimpleIoc.Default.Register<IPViewModel>();
+            SimpleIoc.Default.Register<TVViewModel>();
         }
 
         public QQViewModel QQ
@@ -60,7 +61,13 @@ namespace baibao.ViewModel
                 return ServiceLocator.Current.GetInstance<WeatherViewModel>();
             }
         }
-
+        public TVViewModel TV
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<TVViewModel>();
+            }
+        }
         public static void Cleanup()
         {
            
