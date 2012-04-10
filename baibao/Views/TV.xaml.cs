@@ -11,6 +11,8 @@ namespace baibao.Model
     /// </summary>
     public partial class TV : PhoneApplicationPage
     {
+        PopupCotainer pc;
+        UserControl1 loading ;
         /// <summary>
         /// Initializes a new instance of the TV class.
         /// </summary>
@@ -53,20 +55,31 @@ namespace baibao.Model
                 client.getTVprogramStringAsync(int.Parse(b.id), DateTime.Now.ToString("yyyy-MM-dd"), "");
                 client.getTVprogramStringCompleted += new EventHandler<TvServices.getTVprogramStringCompletedEventArgs>(client_getTVprogramStringCompleted);
                 selectorRight.IsExpanded = true;
+                loading = new UserControl1(new List<string>() { "loading..." });
+                pc = new PopupCotainer(this);
+                pc.Show(loading);
             }
         }
 
         void client_getTVprogramStringCompleted(object sender, TvServices.getTVprogramStringCompletedEventArgs e)
         {
-            string[] result = e.Result;
-            string str = string.Empty;
-            char[] chars = new char[] { '@' };
-            foreach (string s in result)
-            {
-                str += s.Split(chars, StringSplitOptions.RemoveEmptyEntries)[0] + ":" + s.Split(chars, StringSplitOptions.RemoveEmptyEntries)[1];
 
+
+            char[] chars = new char[] { '@' };
+
+            List<string> list = new List<string>();
+            StringBuilder sb = new StringBuilder();
+            foreach (string s in e.Result)
+            {
+                list.Add(s.Split(chars, StringSplitOptions.RemoveEmptyEntries)[0] + ":" + s.Split(chars, StringSplitOptions.RemoveEmptyEntries)[1]);
+                sb.Append(s.Split(chars, StringSplitOptions.RemoveEmptyEntries)[0] + ":" + s.Split(chars, StringSplitOptions.RemoveEmptyEntries)[1]);
             }
-            System.Windows.MessageBox.Show(str);
+            //System.Windows.MessageBox.Show(sb.ToString());
+            //pc = new PopupCotainer(this);
+            loading.CloseMeAsPopup();
+            pc = new PopupCotainer(this);
+            loading = new UserControl1(list);
+            pc.Show(loading);
         }
 
 

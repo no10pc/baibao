@@ -29,8 +29,8 @@
         <StackPanel x:Name="TitlePanel"
                     Grid.Row="0"
                     Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle"
-                       Text="MY APPLICATION"
+            <TextBlock x:Name="TV播报"
+                       Text="电视节目"
                        Style="{StaticResource PhoneTextNormalStyle}" />
             <TextBlock x:Name="PageTitle"
                        Text="page name"
