@@ -46,13 +46,23 @@ namespace baibao.Model
         }
         void DataSourceMiddle_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            BaseInfo b = selectorMiddle.DataSource.SelectedItem as BaseInfo;
-            List<BaseInfo> City = new DataItem().CityNextItem(b.Id);
             try
             {
-                this.selectorRight.DataSource = new ListLoopingDataSource<BaseInfo>() { Items = City, SelectedItem = City[0] };
+                BaseInfo b = selectorMiddle.DataSource.SelectedItem as BaseInfo;
+                List<BaseInfo> City = new DataItem().CityNextItem(b.Id);
+                if (City.Count > 0)
+                {
+                    this.selectorRight.DataSource = new ListLoopingDataSource<BaseInfo>() { Items = City, SelectedItem = City[0] };
+                   
+                }
+                else
+                {
+
+                    this.selectorRight.DataSource = selectorMiddle.DataSource;
+                }
                 this.selectorRight.Visibility = System.Windows.Visibility.Visible;
                 this.selectorRight.IsExpandedChanged += new System.Windows.DependencyPropertyChangedEventHandler(selectorRight_IsExpandedChanged);
+
             }
             catch
             {
@@ -60,6 +70,7 @@ namespace baibao.Model
             }
 
         }
+
 
         void selectorRight_IsExpandedChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
@@ -72,7 +83,7 @@ namespace baibao.Model
                 selectorRight.IsExpanded = true;
                 ZipServices.ChinaZipSearchWebServiceSoapClient client = new ZipServices.ChinaZipSearchWebServiceSoapClient();
                 client.getZipCodeByAddressCompleted += new EventHandler<ZipServices.getZipCodeByAddressCompletedEventArgs>(client_getZipCodeByAddressCompleted);
-                client.getZipCodeByAddressAsync(a.Id, b.Name, c.Name, "");
+                client.getZipCodeByAddressAsync(a.Id, b.Name, "", "");
 
                 loading = new UserControl1(new List<string>() { "loading..." });
                 pc = new PopupCotainer(this);
@@ -83,62 +94,228 @@ namespace baibao.Model
 
         void client_getZipCodeByAddressCompleted(object sender, ZipServices.getZipCodeByAddressCompletedEventArgs e)
         {
-            ZipServices.ArrayOfXElement element = e.Result;
 
-            var results = from item in element.Nodes[0].Descendants("getZipCodeByAddressResult")
-                          select item;
-            int count = results.Count();
+
+            List<Zipinfo> zipinfos = new List<Zipinfo>();
+            List<XElement> list = e.Result.Nodes;
+
+            string str = list[0].ToString();
+            try
+            {
+
+                if (str.Contains("数据没有发现"))
+                {
+                    System.Windows.MessageBox.Show("数据没有发现");
+                }
+                else
+                {
+                    using (XmlReader reader = XmlReader.Create(new StringReader(str)))
+                    {
+                        Zipinfo zipinfo = null;
+                        while (reader.Read())
+                        {
+                            if (reader.Name == "PROVINCE")
+                            {
+                                zipinfo = new Zipinfo
+                                {
+                                    province = reader.ReadInnerXml()
+                                };
+                            }
+                            else
+                            {
+                                if (reader.Name == "CITY")
+                                {
+                                    zipinfo.city = reader.ReadInnerXml();
+                                    continue;
+                                }
+                                if (reader.Name == "ADDRESS")
+                                {
+                                    zipinfo.address = reader.ReadInnerXml();
+                                    continue;
+                                }
+                                if (reader.Name == "ZIP")
+                                {
+                                    zipinfo.zip = reader.ReadInnerXml();
+                                    zipinfos.Add(zipinfo);
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                if (str == null)
+                {
+                    System.Windows.MessageBox.Show("网络连接失败，请稍后再试！");
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show(exception.Message);
+                }
+            }
+
+            zipinfos.TrimExcess();
+            List<string> citylist = new List<string>();
+            foreach (Zipinfo z in zipinfos)
+            {
+                citylist.Add(z.zip + ":" + z.address);
+            }
+
             loading.CloseMeAsPopup();
-            loading = new UserControl1(new List<string>() { "e.Result" });
+            loading = new UserControl1(citylist);
             pc = new PopupCotainer(this);
             pc.Show(loading);
         }
 
+        //This XML file does not appear to have any style information associated with it. The document tree is shown below.
+        //<DataSet xmlns="http://WebXml.com.cn/">
+        //<xs:schema xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="NewDataSet">
+        //<xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+        //<xs:complexType>
+        //<xs:choice minOccurs="0" maxOccurs="unbounded">
+        //<xs:element name="ZipInfo">
+        //<xs:complexType>
+        //<xs:sequence>
+        //<xs:element name="PROVINCE" type="xs:string" minOccurs="0"/>
+        //<xs:element name="CITY" type="xs:string" minOccurs="0"/>
+        //<xs:element name="ADDRESS" type="xs:string" minOccurs="0"/>
+        //<xs:element name="ZIP" type="xs:string" minOccurs="0"/>
+        //</xs:sequence>
+        //</xs:complexType>
+        //</xs:element>
+        //</xs:choice>
+        //</xs:complexType>
+        //</xs:element>
+        //</xs:schema>
+        //<diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+        //<NewDataSet xmlns="">
+        //<ZipInfo diffgr:id="ZipInfo1" msdata:rowOrder="0">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>城子河及所属各街道</ADDRESS>
+        //<ZIP>158100</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo2" msdata:rowOrder="1">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>滴道区及所属各街道</ADDRESS>
+        //<ZIP>158100</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo3" msdata:rowOrder="2">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>恒山区及所属各街道</ADDRESS>
+        //<ZIP>158100</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo4" msdata:rowOrder="3">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>鸡冠区及所属各街道</ADDRESS>
+        //<ZIP>158100</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo5" msdata:rowOrder="4">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>鸡冠区西郊乡</ADDRESS>
+        //<ZIP>158100</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo6" msdata:rowOrder="5">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>梨树区及所属各街道</ADDRESS>
+        //<ZIP>158100</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo7" msdata:rowOrder="6">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>安村付业队、义安村、安</ADDRESS>
+        //<ZIP>158130</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo8" msdata:rowOrder="7">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>长胜村、薛家村、义安村</ADDRESS>
+        //<ZIP>158130</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo9" msdata:rowOrder="8">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>村</ADDRESS>
+        //<ZIP>158130</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo10" msdata:rowOrder="9">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>滴道河乡</ADDRESS>
+        //<ZIP>158130</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo11" msdata:rowOrder="10">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>红旗乡所属义安村三队、义</ADDRESS>
+        //<ZIP>158130</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo12" msdata:rowOrder="11">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>乐村、红旗村、张鲜村、</ADDRESS>
+        //<ZIP>158130</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo13" msdata:rowOrder="12">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>民主乡</ADDRESS>
+        //<ZIP>158130</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo14" msdata:rowOrder="13">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>四队、小恒山村及其余各</ADDRESS>
+        //<ZIP>158130</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo15" msdata:rowOrder="14">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>村、南甸子村、全铁村</ADDRESS>
+        //<ZIP>158150</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo16" msdata:rowOrder="15">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>滴道河乡所属王家村、河东</ADDRESS>
+        //<ZIP>158150</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo17" msdata:rowOrder="16">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>鸡西市梨树乡</ADDRESS>
+        //<ZIP>158160</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo18" msdata:rowOrder="17">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>长青乡及所属新华村、新城</ADDRESS>
+        //<ZIP>158170</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo19" msdata:rowOrder="18">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>村、西城村、城西畜牧场</ADDRESS>
+        //<ZIP>158170</ZIP>
+        //</ZipInfo>
+        //<ZipInfo diffgr:id="ZipInfo20" msdata:rowOrder="19">
+        //<PROVINCE>黑龙江</PROVINCE>
+        //<CITY>鸡西市</CITY>
+        //<ADDRESS>及所属其余各村</ADDRESS>
+        //<ZIP>158170</ZIP>
+        //</ZipInfo>
+        //</NewDataSet>
+        //</diffgr:diffgram>
+        //</DataSet>
 
-        //<getZipCodeByAddressResult xmlns="http://WebXml.com.cn/">
-        //  <xs:schema id="ZipCodeDataSet" targetNamespace="http://tempuri.org/ZipCodeDataSet.xsd" xmlns:mstns="http://tempuri.org/ZipCodeDataSet.xsd" xmlns="http://tempuri.org/ZipCodeDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
-        //    <xs:element name="ZipCodeDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
-        //      <xs:complexType>
-        //        <xs:choice minOccurs="0" maxOccurs="unbounded">
-        //          <xs:element name="ZipInfo">
-        //            <xs:complexType>
-        //              <xs:sequence>
-        //                <xs:element name="PROVINCE" type="xs:string" minOccurs="0" />
-        //                <xs:element name="CITY" type="xs:string" minOccurs="0" />
-        //                <xs:element name="ADDRESS" type="xs:string" minOccurs="0" />
-        //                <xs:element name="ZIP" type="xs:string" minOccurs="0" />
-        //              </xs:sequence>
-        //            </xs:complexType>
-        //          </xs:element>
-        //        </xs:choice>
-        //      </xs:complexType>
-        //    </xs:element>
-        //  </xs:schema>
-        //  <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
-        //    <ZipCodeDataSet xmlns="http://tempuri.org/ZipCodeDataSet.xsd">
-        //      <ZipInfo diffgr:id="ZipInfo1" msdata:rowOrder="0" diffgr:hasChanges="inserted">
-        //        <PROVINCE>提示信息</PROVINCE>
-        //        <CITY>数据没有发现</CITY>
-        //        <ADDRESS>http://www.webxml.com.cn/</ADDRESS>
-        //        <ZIP />
-        //      </ZipInfo>
-        //    </ZipCodeDataSet>
-        //  </diffgr:diffgram>
-        //</getZipCodeByAddressResult>
 
-
-
-
-
-
-
-        // option 2: implement and use IComparer<T>
-
-
-
-
-        // abstract the reusable code in a base class
-        // this will allow us to concentrate on the specifics when implementing deriving looping data source classes
         public abstract class LoopingDataSourceBase : ILoopingSelectorDataSource
         {
             private object selectedItem;

@@ -37,6 +37,14 @@ namespace baibao.Model
             return this.id.CompareTo(other.id);
         }
     }
+    public class Zipinfo
+    {
+        public string province { get; set; }
+        public string city { get; set; }
+        public string address { get; set; }
+        public string zip {get;set;}
+
+    }
 
     public class DataItem
     {
